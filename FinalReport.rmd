@@ -11,29 +11,97 @@ require(tigerstats)
 avast <-read.csv(file="avastivironal.csv",header=TRUE)
 ```
 
-# Introduction
+# Introduction  
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
 
 A new  preventative aides (abacavirinol) is under test in clinical trials. Analyze the effectiveness of this drug across the board. Consider population subgroups by gender, drug use, and sexual orientation. Finish this!
 
+# All
+
+Is the vaccine effective?  
+$H_0$: The vaccine has no effect on whether one contracts aids or not.  
+$H_1$: The vaccine affects whether one contracts aids or not.
+
+```{r}
+barchartGC( ~ infected+treatment, type='percent', horizontal = TRUE, data=avast)
+```
+
+```{r}
+tab = xtabs(~infected+treatment, data=avast)
+print(tab)
+```
+
+```{r}
+chisqtestGC(~infected+treatment, data=avast)
+```
+
+The bar charts shows...
+
+$H_0:$ The data shows abacavirinol has no effect on whether one contracts AIDS or not.  
+$H_1:$ The data shows abacavirinol has an effect on whether one contracts AIDS or not.
+
+The remaining questions are: does abacavirinol have a different effect based on gender, drug use and sexual orientation.
+
+$H_0:$ The data shows abacavirinol has no effect on whether one is female or male.  
+$H_1:$ The data shows abacavirinol has an effect on whether one is female or male.
+
+
+$H_0:$ The data shows abacavirinol has no effect on whether one uses drugs or not.
+$H_1:$ The data shows abacavirinol has an effect on whether one uses drugs or not.
+
+
+$H_0:$ The data shows abacavirinol has no effect on ones sexual orientation. 
+$H_1:$ The data shows abacavirinol has an effect on ones sexual orientation.
+
 # Methods
 
+In everyone of these, we will be looking to see the categoriacal varibles. 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+
+The methods that are used are categorical variables, the graphical display will be a chart, the the numeraical one will be a cross tabulation, and for the inferential results chi-squared test will be used. These methods are used to test the hypothesis, that the drug abacavirinol is effective in treating people that have contracted AIDS.     
 
 #Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
+Is the vaccine effective in the general population?
+
 ## Descriptive Results
+
+Here is the bar plot, numerical summary and chi-squeared tests results. 
 
 ### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
+```{r}
+barchartGC(~infected + treatment, data=avast, type = "percent")
+```
+
+The bar chart shows a significant difference between the population that took the preventative AIDS drug and those that took a placebo. More of the population that took the placebo, contracted AIDS. 
+
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+Numerical summary is a cross tabulation.
+
+```{r}
+gentable = xtabs(~infected+treatment, data=avast)
+print(gentable)
+colPerc(gentable)
+rowPerc(gentable)
+```
+
+The table shows the amount of people who got the drug or placebo and the resutls. The vaccine can expose you to AIDS.
+
+```{r}
+chisqtestGC(~treatment+infected, data=avast)
+```
+
+The P value is 0.
+Since the p value is 0 we can conclude that the treament does affect whether you contract AIDS or not.
 
 ## Inferential Results
 
